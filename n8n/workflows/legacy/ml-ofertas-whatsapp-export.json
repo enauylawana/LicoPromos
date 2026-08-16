@@ -1,0 +1,86 @@
+{
+  "name": "ML Ofertas - WhatsApp [LEGADO - NÃO ATIVAR]",
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "minutes", "minutesInterval": 30 }] } },
+      "id": "2b38f10c-ff8c-4913-8451-bf6e26f3b6d9",
+      "name": "Cron_30min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {
+        "url": "https://api.mercadolibre.com/sites/MLB/search",
+        "sendQuery": true,
+        "queryParameters": { "parameters": [
+          { "name": "q", "value": "fone bluetooth" },
+          { "name": "sort", "value": "relevance" },
+          { "name": "limit", "value": "10" }
+        ] },
+        "options": {}
+      },
+      "id": "63528018-5f06-4f1c-9b3b-d6ae1169dd9a",
+      "name": "Busca_ML",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [224, 0]
+    },
+    {
+      "parameters": {
+        "jsCode": "const out = [];\nfor (const item of items) {\n  const results = (item.json && item.json.results) || [];\n  for (const prod of results) {\n    const price = prod.price || 0;\n    const orig = prod.original_price || price;\n    const desc = orig > 0 ? Math.round(((orig - price) / orig) * 100) : 0;\n    if (desc >= 10) {\n      const title = prod.title || \\\"\\\";\n      const thumb = prod.thumbnail || \\\"\\\";\n      out.push({ json: { title, price, link: prod.permalink, image: thumb.replace(\\\"-I.jpg\\\", \\\"-O.jpg\\\"), msg: \\\"🔥 *OFERTA!*\\\\n\\\\n*\\\" + title + \\\"*\\\\n💰 R$ \\\" + price + \\\"\\\\n📉 \\\" + desc + \\\"% OFF\\\" } });\n    }\n  }\n}\nreturn out.slice(0, 5);"
+      },
+      "id": "c5df4f95-52eb-47a8-82b2-f8459577e7e1",
+      "name": "Processador_Ofertas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [448, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://www.mercadolivre.com.br/social-sell/api/link-generator",
+        "sendHeaders": true,
+        "headerParameters": { "parameters": [
+          { "name": "cookie", "value": "" },
+          { "name": "content-type", "value": "application/json" }
+        ] },
+        "sendBody": true,
+        "bodyParameters": { "parameters": [{ "name": "url", "value": "={{ $(\"Processador_Ofertas\").item.json.link }}" }] },
+        "options": {}
+      },
+      "id": "b3063d01-ca02-4f60-99ff-b57ca9825083",
+      "name": "Gerador_Link_Afiliado",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [672, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "<__PLACEHOLDER_VALUE__URL da API do WhatsApp__>",
+        "sendBody": true,
+        "bodyParameters": { "parameters": [
+          { "name": "caption", "value": "={{ $(\"Processador_Ofertas\").item.json.msg }}\n\n🛒 Link: {{ $json.short_url }}" },
+          { "name": "image", "value": "={{ $(\"Processador_Ofertas\").item.json.image }}" }
+        ] },
+        "options": {}
+      },
+      "id": "345aa3e0-d807-415f-975d-c55c1072ceef",
+      "name": "WhatsApp_Sender",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [896, 0]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Cron_30min": { "main": [[{ "node": "Busca_ML", "type": "main", "index": 0 }]] },
+    "Busca_ML": { "main": [[{ "node": "Processador_Ofertas", "type": "main", "index": 0 }]] },
+    "Processador_Ofertas": { "main": [[{ "node": "Gerador_Link_Afiliado", "type": "main", "index": 0 }]] },
+    "Gerador_Link_Afiliado": { "main": [[{ "node": "WhatsApp_Sender", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1", "binaryMode": "separate" },
+  "tags": []
+}

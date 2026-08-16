@@ -1,0 +1,94 @@
+Guia — Como Evitar o Bloqueio de Links de Afiliados no WhatsApp e Telegram
+As plataformas aplicam dois tipos de bloqueio de forma independente: o WhatsApp/Meta analisa o conteúdo e a reputação do remetente para marcar links como inseguros ou restringir o alcance de mensagens (comportamento típico de spam comercial em massa), enquanto o Telegram bloqueia domínios específicos ao nível do cliente (a mensagem "This channel can't be displayed" ou o link aparece como não seguro). O segredo não é encontrar um "link mágico" que não seja detectado, mas sim operar dentro do comportamento que os algoritmos classificam como legítimo. Este guia organiza as estratégias em quatro camadas de proteção.
+
+1. Camada 1 — A estrutura do link (o que importa antes do envio)
+Estratégia
+Por que funciona
+Como aplicar
+Use o encurtador oficial da plataforma
+amzn.to e shope.ee são domínios reconhecidos e permitidos pelas próprias plataformas; bloqueá-los prejudicaria o negócio da Meta/Amazon/Shopee
+Gere sempre pelo programa de afiliados da própria plataforma, nunca por encurtadores genéricos desconhecidos
+Alterne domínios
+Padrões repetitivos de domínio único (20 links seguidos do mesmo encurtador) são o sinal número 1 detectado pelos filtros
+Distribua: 40% encurtador oficial, 30% link longo do produto, 30% Bitly/Dub.co personalizado
+Evite encurtadores gratuitos massificados
+Domínios como bit.do, tiny.cc e encurtadores gratuitos baratos são usados por golpistas e caem nas listas de bloqueio da Meta
+Prefira Bitly pago ou Domínio próprio (ex.: ofertas.seusite.com)
+Nunca encurte um link já encurtado
+Redirecionamentos em cadeia (bit.ly → shope.ee) parecem tentativa de ocultar o destino e aumentam o risco de bloqueio
+O link encurtado deve apontar direto para a página do produto
+Cuide do domínio em si
+Domínios novos e sem histórico de tráfego são tratados com desconfiança
+Use domínios maduros; se criar um próprio, aqueça-o com tráfego legítimo antes de usar nos grupos
+2. Camada 2 — O ritmo de envio (o fator decisivo)
+O volume por si só não banifica uma conta — o que banifica é o padrão de disparo em massa. Aplicadores profissionais de grupos de ofertas operam com estas regras, que também estão embutidas no módulo anti-bloqueio do prompt OFERTA MASTER PRO:
+
+	•	Intervalo entre mensagens: 3 a 7 minutos entre envios no mesmo grupo, com variação aleatória. Disparos em rajada (10 mensagens em 1 minuto) ativam os filtros quase instantaneamente;
+	•	Teto diário por grupo: 15 mensagens/dia é o padrão seguro; grupos consolidados com alta interação toleram até 20;
+	•	Teto total da operação: ~100 mensagens/dia no WhatsApp (somando todos os grupos) e ~50 no Telegram;
+	•	Horários naturais: dispare apenas nos horários em que membros reais estão ativos (7h30–9h, 12h–13h, 19h–23h). Mensagens enviadas de madrugada a grupos silenciosos geram baixo engajamento relativo, que é um sinal de spam para o algoritmo;
+	•	Use o agendamento nativo do Telegram em vez de disparos simultâneos.
+
+3. Camada 3 — A qualidade do conteúdo (engajamento é a defesa)
+Os filtros da Meta usam sinais de engajamento para distinguir "grupo de ofertas legítimo" de "disparo de spam". Grupos onde as pessoas reagem, respondem e clicam são protegidos; grupos onde ninguém interage são penalizados.
+
+	•	Valor antes do link: nunca envie mensagem que seja só um link. A estrutura ideal tem preço confirmado, benefício e prova social antes do CTA — isso gera cliques e conversas, que são sinais positivos;
+	•	Evite a linguagem de spam: CAPS LOCK exagerado, "CLIQUE JÁ!!!", "URGENTÍSSIMO", "GANHE DINHEIRO" e mais de 2 emojis por linha são gatilhos clássicos de filtro;
+	•	Rotação de copy: nunca repita a mesma mensagem duas vezes. Gere variações (o prompt faz isso automaticamente) — o hash de texto repetido é detectável;
+	•	1 link por mensagem: mensagens com 2+ links têm taxa de bloqueio muito maior;
+	•	Incentive reação: termine algumas mensagens com pergunta ("querem mais ofertas assim?") — respostas dos membros são o sinal mais forte de grupo saudável;
+	•	Moderação ativa: remova membros que denunciam mensagens dentro do próprio grupo e responda dúvidas rapidamente.
+
+4. Camada 4 — Plano de contingência (quando o bloqueio acontece)
+Mesmo operando perfeitamente, bloqueios pontuais acontecem. Tenha o plano pronto:
+
+Situação
+Resposta imediata
+Link marcado como "não seguro" no grupo
+Substitua por: (a) mesmo produto com outro encurtador, (b) mesmo produto na plataforma concorrente, (c) técnica "comente QUERO" (link sai da mensagem e vai no privado)
+Mensagem com entrega restrita ("somente para alguns")
+Reduza o volume no grupo por 48–72h, aumente mensagens de conteúdo sem link (dica, comparativo, enquete) para reconstruir o sinal de engajamento
+Grupo banido
+A operação continua nos grupos espelho (backup) — por isso mantenha sempre 1–2 grupos espelho por nicho já divulgados
+Conta WhatsApp restringida
+Pare todos os disparos por 5–7 dias, use apenas o WhatsApp Business com catálogo, reative gradualmente começando por 3 mensagens/dia
+A técnica "comente QUERO" (a mais segura de todas)
+Quando o link estiver em risco, use o fluxo sem link no corpo da mensagem:
+
+"🎧 Fone Bluetooth com cancelamento de ruído: de R$ 249,90 por R$ 104,90⭐ 4.7 👇 ComenteQUERO que te mando o link agora!"
+
+O membro comenta, o bot (ou você manualmente) envia o link de afiliado no privado. Resultado: zero link na timeline do grupo, engajamento alto (comentários são sinal forte de grupo saudável) e ainda abre a conversa privada, que é o melhor canal de conversão. O prompt OFERTA MASTER PRO já prevê essa técnica no módulo 12-B como alternativa automática quando um link é bloqueado.
+
+5. Checklist rápido antes de cada disparo
+#
+Verificação
+Status
+1
+Intervalo de 3–7 min entre mensagens no mesmo grupo
+☐
+2
+Máximo de 15 mensagens/dia por grupo
+☐
+3
+Copy única (nunca repetida) com 3+ linhas de valor antes do link
+☐
+4
+Apenas 1 link por mensagem
+☐
+5
+Domínios variados (oficial / longo / personalizado)
+☐
+6
+Sem CAPS LOCK agressivo e máx. 2 emojis por linha
+☐
+7
+Horário de atividade real do grupo
+☐
+8
+Grupos espelho prontos para contingência
+☐
+Seguindo essas quatro camadas, a taxa de bloqueio cai drasticamente e, quando ocorre, você já tem resposta preparada — a operação nunca para.
+
+
+
+Guia criado por Manus AI — complemento do prompt OFERTA MASTER PRO (módulo 12-B).

@@ -1,0 +1,68 @@
+{
+  "name": "Automação Mercado Livre Afiliados [LEGADO - NÃO ATIVAR]",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": { "rule": { "interval": [{ "field": "minutes", "minutesInterval": 30 }] } },
+      "id": "1",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [400, 300]
+    },
+    {
+      "parameters": {
+        "url": "https://api.mercadolibre.com/sites/MLB/search",
+        "options": {},
+        "queryParametersUi": {
+          "parameter": [
+            { "name": "q", "value": "={{ $node[\"Gerador de Keywords\"].json[\"keyword\"] }}" },
+            { "name": "sort", "value": "relevance" }
+          ]
+        }
+      },
+      "id": "2",
+      "name": "Busca Mercado Livre",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [800, 300]
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "# Cole aqui o código do arquivo n8n_ml_processor.py"
+      },
+      "id": "3",
+      "name": "Processador Python",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "SUA_API_WHATSAPP_AQUI",
+        "sendBody": true,
+        "bodyParametersUi": {
+          "parameter": [
+            { "name": "number", "value": "ID_DO_GRUPO" },
+            { "name": "caption", "value": "={{ $json.message }}" },
+            { "name": "image", "value": "={{ $json.image }}" }
+          ]
+        }
+      },
+      "id": "4",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1200, 300]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": { "main": [[{ "node": "Busca Mercado Livre", "type": "main", "index": 0 }]] },
+    "Busca Mercado Livre": { "main": [[{ "node": "Processador Python", "type": "main", "index": 0 }]] },
+    "Processador Python": { "main": [[{ "node": "Enviar WhatsApp", "type": "main", "index": 0 }]] }
+  },
+  "settings": {},
+  "tags": []
+}

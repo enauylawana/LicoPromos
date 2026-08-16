@@ -1,0 +1,332 @@
+=== PAGE 1 ===
+P R O M P T  E S P E C I A L I S T A  E M  M A R K E T P L A C E  &  C O P Y W R I T I N G
+OFERTA
+MASTER PRO
+O prompt que transforma qualquer IA em seu garimpeiro de ofertas, redator de
+copy e distribuidor de produtos para grupos de WhatsApp e Telegram.
+
+MERCADO LIVRE
+
+BUSCA PAGINADA
+
+CENTRO DE DISTRIBUIÇÃO
+
+LINKS + RASTREAMENTO
+G U I A  D E  U S O  —  P A S S O  A  P A S S O
+• AMAZON • SHOPEE
+QUANTIDADE EXATA POR RODADA
+ACERVO PERSISTENTE DE OFERTAS
+UTM E LOG DE CLIQUES POR DISPARO
+
+=== PAGE 2 ===
+0 1  —  O  Q U E  E S T E  P R O M P T  F A Z  P O R  V O C Ê
+Uma única IA substitui o garimpo, a redação e a gestão
+de ofertas
+O OFERTA MASTER PRO transforma qualquer IA com acesso à internet (ChatGPT, Claude, Gemini, Manus) em um especialista
+completo de marketplaces e afiliados, automatizando o ciclo inteiro de um grupo de ofertas.
+
+GARIMPO DE PRODUTOS
+Busca ofertas do dia, mais vendidos e produtos em
+alta no Mercado Livre, Amazon e Shopee.
+
+NAVEGAÇÃO POR PÁGINAS
+
+CENTRO DE DISTRIBUIÇÃO
+Armazena todos os produtos garimpados em um
+inventário persistente com status e histórico.
+
+VERIFICAÇÃO DE PREÇOS
+✑
+COPY DE CONVERSÃO
+
+LINKS + RASTREAMENTO UTM
+V I S Ã O  G E R A L
+Varre páginas 1, 2, 3, 4... de cada nicho sem repetir
+produtos já armazenados no acervo.
+
+=== PAGE 3 ===
+P A S S O  1  D E  6
+Copiar e colar o prompt na sua IA
+E M  3 0  S E G U N D O S
+01
+ATIVAÇÃO DA IA
+A Ç Ã O  0 1
+Copie todo o prompt
+Do arquivo prompt_especialista_marketplace.md
+— da seção "INÍCIO DO PROMPT" até "FIM DO
+PROMPT".
+A Ç Ã O  0 2
+Cole como primeira mensagem
+Na IA de sua preferência: ChatGPT, Claude,
+Gemini ou Manus — sempre no início de uma
+nova conversa.
+A Ç Ã O  0 3
+Use IA com navegação na
+internet
+A verificação de preços depende de acessar as
+páginas reais dos marketplaces em tempo real.
+A Ç Ã O  0 4
+Deixe a configuração acontecer
+Não envie comandos fora do fluxo inicial — as
+tags de afiliado ficam guardadas para todos os
+disparos futuros.
+⚠ Sem acesso à internet, a IA não consegue validar preços e promoções na página do produto — este é o requisito número 1 do prompt.
+P A S S O  1
+A IA confirmará a ativação com a mensagem: " /g4B4  OFERTA
+MASTER PRO ativado." — e fará 5 perguntas de
+configuração para começar.
+
+=== PAGE 4 ===
+P A S S O  2  D E  6
+Configurar as conexões com os marketplaces
+1 0 – 1 5  M I N U T O S  ( 1 ª  V E Z )
+02
+3
+P L ATA F O R M A S ,
+3  P E R G U N TA S
+ Mercado Livre
+PUBLISHER ID
+Programa de Parceiros do Mercado Livre — o ID
+fica embutido no link gerado automaticamente.
+1. Criar conta no programa de parceiros
+2. Gerar credenciais de aplicativo
+3. Obter o ID de afiliado (publisher ID)
+ Amazon
+TAG DE ASSOCIAÇÃO
+ Shopee
+PID DE AFILIADO
+Shopee Afiliados — o PID entra nos links
+encurtados shope.ee com rastreamento nativo.
+1. Acessar affiliate.shopee.com.br
+2. Fazer o cadastro e aguardar aprovação
+3. Obter o PID no painel de afiliados
+P E R G U N TA S  4  E  5
+—
+P R E F E R Ê N C I A S  D E
+O P E R A Ç Ã O
+PRODUTOS POR RODADA NICHOS A MONITORAR MENSAGENS POR DISPARO
+P A S S O  2
+O prompt conduz o
+cadastro de forma
+guiada — sem tag
+configurada, a IA
+bloqueia o disparo
+para você nunca
+perder comissão.
+Amazon Associates Brasil — a tag acompanha
+cada link no formato amzn.to/ASIN/?tag=SUA-
+TAG.
+1. Criar conta em afiliados.amazon.com.br
+2. Confirmar o site ou canal de divulgação
+3. Obter a tag (ex.: seudominio-20)
+Quantos garimpar de cada vez: 20, 50 ou 100. A IA
+retorna exatamente essa quantidade.
+Ex.: casa, eletrônicos, beleza, moda, infantil —
+cadastrados no radar de garimpo contínuo.
+Quantidade exata de mensagens por envio nos grupos
+— respeitada em cada rodada.
+
+=== PAGE 5 ===
+P A S S O  3  D E  6
+Usar os comandos de busca
+9  C O M A N D O S
+/ofertas do dia
+Ofertas e deals ativos no marketplace
+escolhido.
+/mais vendidos /busca [termo]
+Busca livre com filtros de preço, nota e
+avaliações.
+/categorias
+Lista os nichos cadastrados no radar de
+garimpo.
+/adicionar [nicho] /reabastecer [nicho]
+Garimpa novos produtos e abastece o
+acervo.
+/verificar preços /disparo [quantidade]
+Gera as mensagens prontas com links
+de afiliado.
+/relatório
+03
+C O M A N D O S  D E  B U S C A
+# QUANTIDADE EXATA
+Pediu 20, recebe 20; pediu 50, recebe 50. A IA
+nunca retorna menos sem justificar e nunca mais do
+que o pedido.
+ NAVEGAÇÃO POR PÁGINAS
+A cada rodada, a IA avança para a próxima página
+de resultados do nicho: dia 1 pega da página 1, dia
+2 da página 2 — explorando produtos novos
+continuamente.
+P A S S O  3
+Best sellers do nicho ou categoria
+informada.
+Adiciona um novo nicho ao
+monitoramento contínuo.
+Atualiza preços e validade das
+promoções do acervo.
+Status do acervo, itens expirados e
+produtos em alta.
+
+=== PAGE 6 ===
+P A S S O  4  D E  6
+Entender o Centro de Distribuição
+A C E R V O  P E R S I S T E N T E
+04
+O INVENTÁRIO DE OFERTAS
+C A M P O S  D A  T A B E L A  D E  C A D A
+P R O D U T O
+#
+ID único: ML-007, AMZ-017, SHP-042
+ Plataforma e nicho de origem
+ Página de resultados de onde veio o garimpo
+ Preço de tabela, promocional e desconto %
+ Status: ATIVO / EXPIRADO / ESGOTADO
+ Link de afiliado com UTM + copy pronta
+ Histórico de disparos para não repetir oferta
+COMO O ACERVO SE SUSTENTA SOZINHO
+1
+REVALIDAÇÃO ANTES DO DISPARO
+A IA confere preços, desconto e estoque contra a página real do marketplace antes de cada rodada de envio.
+2
+EXPIRADOS SAEM DA FILA
+Ofertas sem promoção válida viram EXPIRADO e são trocadas por um substituto já garimpado do mesmo nicho.
+3
+ROTAÇÃO POR ANTIGUIDADE
+Prioridade para produtos ativos mais antigos e nunca enviados — o acervo inteiro circula até o fim.
+4
+REPOSIÇÃO AUTOMÁTICA
+A cada rodada, entra 1 novo garimpo para cada 2–3 produtos enviados — o estoque de ofertas nunca seca.
+∞ Garimpe uma vez, dispare por semanas sem procurar de novo — você envia ofertas diariamente sem precisar iniciar buscas do zero.
+P A S S O  4
+
+=== PAGE 7 ===
+P A S S O  5  D E  6
+Copiar a copy pronta e disparar nos grupos
+M E N S A G E M  P R O N TA E M  8  L I N H A S
+05
+COPY + DISPARO
+B Ô N U S  D E  C O N V E R S Ã O
+ESTRUTURA DA MENSAGEM DE WHATSAPP
+01 Linha de impacto com emoji + desconto em destaque: "/g3EB -58% HOJE"
+02 Nome curto e chamativo — nunca o título técnico da loja
+03 Benefício em 1 frase resolvendo a dor do cliente
+04 Prova social: "⭐  4.8 com +3.100 avaliações"
+05 Preço ancorado: De ~~R$ 249,90~~ por R$ 104,90
+06 Urgência real: cupom até meia-noite, estoque acabando
+07 CTA com link de afiliado + parâmetros UTM completos
+08 Hashtags discretas de nicho — no máximo 3
+ CRONOGRAMA SUGERIDO
+7h30
+Trânsito e café da manhã
+12h
+Hora do almoço
+19h
+Saída do trabalho
+21h
+Pico de abertura
+ WHATSAPP & TELEGRAM
+WhatsApp usa formatação nativa: *negrito* e
+~riscado~. Telegram recebe uma versão estendida.
+Cada mensagem sai pronta para copiar e colar nos
+grupos.
+⚡ Com o comando /disparo 30, a IA gera 30 mensagens validadas — com preços conferidos na página real — prontas para os grupos.
+P A S S O  5
+Cada produto recebe 2 versões de
+tom  — uma urgente e uma racional —
+além de adaptação para grupos
+temáticos (mães, gamers, casa).
+
+=== PAGE 8 ===
+P A S S O  6  D E  6
+Rastrear cliques e otimizar resultados
+U T M  A U T O M Á T I C A
+06
+RASTREAMENTO TOTAL
+ AMAZON
+amzn.to/ASIN
+?tag=SUA-TAG
++ UTM completa
+Encurtador oficial amzn.to preserva o
+rastreamento de afiliado.
+ SHOPEE
+shope.ee/LINK
+?af_id=SEU-PID
++ UTM completa
+Links shope.ee gerados pelo portal de
+afiliados passam melhor pelos filtros de spam.
+ MERCADO LIVRE
+produto?
+publisher_id=
+campaign_id=+UTM
+Publisher ID + campaign_id identificam a
+campanha de cada nicho.
+PA R Â M E T R O S  U T M  A U TO M Á T I C O S
+utm_source = plataforma (amazon, shopee, mercadolivre)
+utm_medium = canal (whatsapp_grupo_1, telegram_canal...)
+utm_campaign = ofertas-10-08-2026
+utm_content = eletronicos_AMZ-017
+L O G  D E  R A S T R E A M E N TO  A C A D A D I S PA R O
+A IA gera uma tabela com ID, produto, link, campanha e grupo de
+destino — cruze os cliques do painel do encurtador com as vendas
+do painel de afiliados.
+ID PRODUTO CAMPANHA GRUPO
+Validação automática: links com tag não configurada são bloqueados antes do envio — você nunca perde comissão por esquecimento.
+P A S S O  6
+Cada link sai com parâmetros completos
+— você sabe exatamente de onde veio
+cada clique e cada venda.
+AMZ-017
+Fone Bluetooth
+ofertas-10-08
+WA Grupo
+ML-007
+Smart TV 50" 4K
+ofertas-10-08
+WA Grupo
+
+=== PAGE 9 ===
+R E S U M O  —  F L U X O  C O M P L E T O
+Do zero a ofertas disparadas diariamente em 6
+passos
+F L U X O  D E
+T R A B A L H O
+SEU CICLO OPERACIONAL
+01
+Colar o prompt na IA com acesso à internet
+ChatGPT, Claude, Gemini ou Manus — como primeira mensagem da conversa. 30 SEGUNDOS
+02
+Configurar tags de afiliado e preferências
+Publisher ID, tag Amazon e PID Shopee + quantidade por rodada e nichos.
+10–15 MIN
+03
+Rodar /mais vendidos e /ofertas do dia nos nichos
+Primeiro garimpo: a quantidade exata que você pediu entra no acervo.
+2 MINUTOS
+04
+O acervo cresce no Centro de Distribuição
+Páginas 1, 2, 3... navegadas automaticamente, sem repetir produtos.
+AUTOMÁTICO
+05
+/disparo 30 → copiar mensagens prontas para os grupos
+Copy validada, preços conferidos e links com UTM em cada mensagem.
+5 MIN/DIA
+06
+/verificar preços e /relatório periodicamente
+Manter o acervo fresco: expirados saem, novos entram, preços confirmados.
+2 MIN/DIA
+R E G R A S  Q U E  P R O T E G E M  S U A
+O P E R A Ç Ã O
+Nunca inventa preço, desconto ou prazo — tudo
+vem da página real do produto.
+⚠ Preço não verificável é sinalizado com ⚠  antes
+do disparo.
+ Oferta expirada é removida da fila
+automaticamente — o grupo nunca recebe
+"oferta morta".
+P R Ó X I M O S  PA S S O S
+Copie o prompt, configure as 3 plataformas
+e faça seu primeiro /disparo hoje mesmo.
+
+Com menos de 10 minutos por dia, sua operação de afiliados roda de forma contínua — o Centro de Distribuição garante ofertas para semanas sem
+precisar garimpar de novo.
+R E S U M O  F I N A L

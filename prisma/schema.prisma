@@ -1,0 +1,174 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model Store {
+  id                String  @id
+  name              String
+  enabled           Boolean @default(false)
+  integrationStatus String  @default("disabled")
+  note              String?
+  offers            Offer[]
+}
+
+model Niche {
+  id                     String  @id @default(cuid())
+  name                   String  @unique
+  wantedKeywords         String
+  forbiddenKeywords      String  @default("[]")
+  allowedBrands          String  @default("[]")
+  forbiddenBrands        String  @default("[]")
+  minPrice               Float   @default(0)
+  maxPrice               Float   @default(100000)
+  minDiscount            Float   @default(10)
+  minRating              Float   @default(0)
+  minReviewCount         Int     @default(0)
+  minSellerReputation    Float   @default(0)
+  freeShippingRequired   Boolean @default(false)
+  enabledStores          String  @default("[]")
+  maxOffers              Int     @default(10)
+  searchTimes            String  @default("[\"09:00\",\"18:00\"]")
+  publishIntervalMinutes Int     @default(15)
+  active                 Boolean @default(true)
+  offers                 Offer[]
+}
+
+model Offer {
+  id                     String          @id @default(cuid())
+  externalId             String
+  storeId                String
+  store                  Store           @relation(fields: [storeId], references: [id])
+  nicheId                String?
+  niche                  Niche?          @relation(fields: [nicheId], references: [id])
+  title                  String
+  imageUrl               String?
+  originalUrl            String
+  affiliateUrl           String?
+  currentPrice           Float
+  previousPrice          Float?
+  discountPercent        Float?
+  rating                 Float?
+  reviewCount            Int?
+  commissionPercent      Float?
+  extraCommissionPercent Float?
+  estimatedCommission    Float?
+  seller                 String?
+  sellerReputation       Float?
+  shipping               String?
+  freeShipping           Boolean         @default(false)
+  stock                  Int?
+  soldQuantity           Int?
+  sellerLevel            String?
+  fullShipping           Boolean         @default(false)
+  reviewSentiment        Float?
+  reviewsAnalyzed        Int             @default(0)
+  reviewSignals          String          @default("[]")
+  promotionEndsAt        DateTime?
+  score                  Float           @default(0)
+  status                 String          @default("pending")
+  discoveredAt           DateTime        @default(now())
+  publishedAt            DateTime?
+  rawData                String          @default("{}")
+  priceHistory           PriceHistory[]
+  salesHistory           SalesHistory[]
+  affiliateLinks         AffiliateLink[]
+  publications           Publication[]
+
+  @@unique([storeId, externalId])
+  @@index([status, score])
+}
+
+model PriceHistory {
+  id          String   @id @default(cuid())
+  offerId     String
+  offer       Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  price       Float
+  collectedAt DateTime @default(now())
+}
+
+model SalesHistory {
+  id           String   @id @default(cuid())
+  offerId      String
+  offer        Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  soldQuantity Int
+  collectedAt  DateTime @default(now())
+
+  @@index([offerId, collectedAt])
+}
+
+model AffiliateLink {
+  id        String   @id @default(cuid())
+  offerId   String
+  offer     Offer    @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  url       String
+  source    String
+  createdAt DateTime @default(now())
+}
+
+model Publication {
+  id            String    @id @default(cuid())
+  offerId       String
+  offer         Offer     @relation(fields: [offerId], references: [id], onDelete: Cascade)
+  destination   String    @default("manual")
+  message       String
+  status        String    @default("queued")
+  attempts      Int       @default(0)
+  nextAttemptAt DateTime?
+  lastError     String?
+  scheduledAt   DateTime?
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+}
+
+model ApiIdempotencyKey {
+  id             String   @id @default(cuid())
+  key            String
+  operation      String
+  requestHash    String
+  responseStatus Int?
+  responseBody   String?
+  state          String   @default("processing")
+  createdAt      DateTime @default(now())
+  expiresAt      DateTime
+
+  @@unique([operation, key])
+  @@index([expiresAt])
+}
+
+model SchedulerRun {
+  id         String    @id @default(cuid())
+  trigger    String
+  status     String
+  startedAt  DateTime  @default(now())
+  finishedAt DateTime?
+  foundCount Int       @default(0)
+  errorCount Int       @default(0)
+  details    String    @default("{}")
+}
+
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  action     String
+  entityType String
+  entityId   String?
+  metadata   String   @default("{}")
+  createdAt  DateTime @default(now())
+}

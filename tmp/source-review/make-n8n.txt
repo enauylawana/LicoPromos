@@ -1,0 +1,186 @@
+LICO PRIMOS — Guia de Automação Completa com Make e n8n
+Este guia mostra como transformar o prompt OFERTA MASTER PRO em uma operação 100% automatizada usando Make ou n8n, conectando a IA às APIs do Mercado Livre, Amazon e Shopee e disparando as ofertas diretamente nos grupos de WhatsApp e Telegram — sem intervenção manual. O fluxo implementa exatamente o que o prompt faz hoje: garimpo → Centro de Distribuição → verificação de preços → copy → link de afiliado com UTM → disparo programado.
+
+Nota importante antes de começar: o Mercado Livre não oferece API pública para afiliados — os links de afiliado são gerados pelo próprio site/portal do programa de parceiros. Por isso, no fluxo LICO PRIMOS, o Mercado Livre usa uma abordagem híbrida: o n8n/Make navega nas páginas públicas (ou importa planilha CSV) e o prompt/IA gera os links de afiliado. Amazon e Shopee possuem APIs oficiais de produtos/afiliados que automatizam tudo. 1 2
+
+
+
+1. Arquitetura geral do LICO PRIMOS
+┌──────────────────────────────────────────────────────────────────┐
+│                     LICO PRIMOS — ARQUITETURA                    │
+│                                                                  │
+│  IA (prompt OFERTA MASTER PRO via API)                           │
+│   ↓ gera commands/garimpo/copy/link+UTM                          │
+│  Centro de Distribuição (banco de dados: MySQL/Postgres/Supabase)│
+│   ↓ produtos validados + preços verificados                      │
+│  Motor de disparo (Make ou n8n)                                  │
+│   ├── WhatsApp → WPPConnect / UltraMsg / Evolution API / API Meta│
+│   └── Telegram → Bot API (nativa, gratuita)                      │
+│                                                                  │
+│  Agendadores: cron diário (disparo) + cron horário (verificação) │
+└──────────────────────────────────────────────────────────────────┘
+
+O papel de cada peça:
+
+Peça
+Função
+Custo típico
+IA (API do ChatGPT/Claude/Gemini/Manus)
+Garimpo, validação, copywriting e geração de link+UTM conforme o prompt
+API: alguns USD/dia
+n8n ou Make
+Orquestração: agenda, conecta, decide e dispara
+n8n self-hosted: gratuito (só VPS); Make: plano gratuito a partir de ~US$ 9/mês
+Banco de dados
+Centro de Distribuição: produtos, preços, status, histórico de disparos
+Gratuito (Supabase/MySQL)
+Gateway WhatsApp
+Envio para os grupos com ritmo anti-bloqueio
+Grátis (WPPConnect/Evolution API) ou pago (UltraMsg, Wassenger)
+Telegram Bot
+Envio para canais
+Gratuito (Bot API oficial)
+Make vs n8n para o LICO PRIMOS: o n8n é a escolha recomendada para esta operação porque tem nó nativo de HTTP (chama a API da Amazon e da Shopee com facilidade), suporta nodes customizados (existe node da PA-API da Amazon mantido pela comunidade) 3 e roda self-hosted em uma VPS de ~R$ 30/mês com custo zero de licença. O Make é mais simples visualmente e não exige servidor, mas tem limite de operações nos planos gratuitos e menos flexibilidade para scraping e banco de dados. Este guia cobre ambos.
+
+2. Credenciais e APIs — o que você precisa obter
+Marketplace
+Credencial
+Onde obter
+O que automatiza
+Amazon
+Acesso à PA-API 5.0 (Access Key, Secret Key, PartnerTag, Marketplace associates-amazon.com.br)
+Portal de afiliados → Tools → Product Advertising API — exige 3 vendas qualificadas nos primeiros 180 dias 2
+Busca de produtos, preço, imagem, título e link de afiliado automático
+Shopee
+Acesso ao Shopee Open Platform (app_id, app_secret, token) via programa de afiliados
+open.shopee.com → criar app → solicitar permissões de afiliado; alternativa: planilha CSV de produtos afiliados exportada do portal
+Busca de produtos e links shope.ee com PID
+Mercado Livre
+Credenciais do app no portal de parceiros + conta de publisher
+developers.mercadolivre.com.br (credenciais de app) + portal de afiliados (publisher ID); geração do link é híbrida
+Identificação do produto; o link de afiliado é inserido pela IA no fluxo
+IA
+API key (OpenAI/Anthropic/Google/Manus)
+Console da plataforma escolhida
+Garimpo, copy, validação
+WhatsApp
+Token do gateway (UltraMsg/Wassenger/2Chat) ou QR code do WPPConnect/Evolution
+Painel do serviço escolhido
+Envio programado aos grupos
+Telegram
+Token do bot
+@BotFather no Telegram (comando /newbot, gratuito)
+Envio programado aos canais
+3. O fluxo ponta a ponta (6 módulos)
+Módulo 1 — Garimpo automatizado (cron diário)
+No n8n:
+	•	Nó Schedule Trigger (todos os dias às 6h00);
+	•	Nó HTTP Request → PA-API da Amazon (SearchItems com Keywords=ofertas eletrônicos, SortBy=Featured, ItemResources=Images.Primary.Large,Offers.Listings.Price,Offers.Listings.MerchantInfo,Reviews.Rating) 2 3;
+	•	Nó HTTP Request → Shopee Open Platform (/api/v2/product/get_items ou importação do CSV do portal de afiliados);
+	•	Nó HTTP Request → scrape/importação das páginas de ofertas do Mercado Livre (ou CSV manual semanal);
+	•	Nó Set → normaliza tudo em um único formato e salva no banco de dados (tabela produtos do Centro de Distribuição).
+
+No Make: use o módulo HTTP + os módulos Google Sheets (como estoque temporário) + o módulo ChatGPT para normalizar.
+
+Módulo 2 — O cérebro IA (o prompt em execução)
+O prompt OFERTA MASTER PRO passa a rodar via API em vez de conversa manual:
+
+No n8n: nó OpenAI/Anthropic/HTTP Request com o system prompt completo do OFERTA MASTER PRO e o user prompt contendo a lista de produtos brutos do Módulo 1 + suas tags de afiliado + tabela de utm_medium dos grupos.
+
+No Make: módulo "ChatGPT/Make an AI Call" com o mesmo conteúdo.
+
+A IA recebe os produtos brutos e devolve, por produto: título, preço verificado, desconto %, status (aprovado/reprovado conforme os critérios do prompt — nota ≥ 4.0, avaliações mínimas, vendedor confiável), link de afiliado montado, UTM completa e a copy pronta em 2 versões. Tudo é gravado de volta no Centro de Distribuição.
+
+Módulo 3 — Centro de Distribuição (banco de dados)
+Estrutura mínima da tabela produtos:
+
+Coluna
+Conteúdo
+id
+ML-007, AMZ-017, SHP-042
+plataforma, nicho, pagina_origem
+origem do garimpo
+titulo, preco_tabela, preco_promo, desconto_pct
+dados da oferta
+link_afiliado, utm_source, utm_medium, utm_campaign, utm_content
+link rastreável
+copy_urgente, copy_racional, status
+ATIVO/EXPIRADO
+historico_preco, ultimo_disparo, vezes_enviado
+controle de rotação
+reprice_flag, reprice_pct
+para o módulo CAÇA AO REPRICE
+No n8n use Postgres/MySQL nodes (VPS) ou Supabase (gratuito). No Make, o módulo Google Sheets funciona, mas com limite de linhas — para escala, prefira o módulo Database/Supabase.
+
+Módulo 4 — Verificação de preços (cron de horários)
+Cron a cada 6–8 horas: o nó HTTP consulta o preço atual de cada produto ATIVO no banco (PA-API GetItems da Amazon é a mais prática); o nó de decisão compara com o preço registrado; se a queda ≥ 15%, marca reprice_flag=true (aciona o alerta do CAÇA AO REPRICE via Módulo 5); se a oferta expirou, marca EXPIRADO e pede reposição automática ao Módulo 1 do nicho correspondente.
+
+Módulo 5 — Disparo programado com ritmo anti-bloqueio
+O coração da operação. O prompt/regra do LINK SEGURO vira lógica no fluxo:
+
+No n8n:
+	•	Schedule Trigger nos horários de pico (7h30, 12h, 19h, 21h);
+	•	SQL/Postgres seleciona os produtos ATIVOS nunca enviados (ou os reprice_flag=true, que têm prioridade — módulo CAÇA AO REPRICE);
+	•	Loop com nó Wait de 3–7 minutos aleatórios entre envios (respeitando o teto de 15/dia por grupo — controle via coluna vezes_enviado e coluna data_disparo);
+	•	Function/Code node sorteia a variação de domínio (40% encurtador oficial, 30% link longo, 30% Bitly) — módulo LINK SEGURO;
+	•	Telegram Send Message (nó nativo, gratuito) para os canais;
+	•	HTTP Request → WPPConnect/Evolution API/UltraMsg para o WhatsApp com a copy + link.
+
+No Make: Schedule + Router + Telegram Send Message + WhatsApp (UltraMsg/Wassenger) + Sleep de 4 minutos entre operações + filtro por grupo com utm_medium diferente em cada branch.
+
+Regra de ouro do LICO PRIMOS: cada branch do fluxo carrega um utm_medium fixo do grupo de destino (wa_geral, wa_eletronicos, tg_vip...). Assim o rastreamento por grupo continua funcionando 100% automatizado, sem você precisar anotar nada.
+
+Módulo 6 — Monitoramento e alertas
+Nó final do fluxo grava no banco cada disparo (produto, grupo, horário, link usado). Um cron semanal gera o resumo de cliques: o n8n consome o painel do Bitly via API (ou você roda manualmente uma vez por semana) e cruza com o painel de afiliados, calculando a conversão por utm_medium — e o nó de IA do prompt analisa o resultado e devolve recomendações ("priorize o grupo wa_eletronicos, converte 6,3%").
+
+4. Implementação prática — caminho recomendado (n8n self-hosted)
+Este é o caminho de menor custo e maior controle, usado pela maioria dos operadores de grupos de ofertas no Brasil 4:
+
+	•	Contrate uma VPS (Hostinger, Contabo — R$ 30–50/mês) com Docker;
+	•	Instale o n8n: docker run -d --name n8n -p 5678:5678 n8nio/n8n;
+	•	Instale o Evolution API (gateway WhatsApp gratuito): docker run -d --name evolution -p 8080:8080 attendli/evolution-api — escaneie o QR code com seu WhatsApp;
+	•	Crie o bot do Telegram no @BotFather e guarde o token;
+	•	Suba o banco (Postgres via Docker ou Supabase gratuito);
+	•	Monte o workflow: comece pelo Módulo 5 (disparo a partir de uma planilha manual para validar o anti-bloqueio), depois adicione o Módulo 2 (IA), e só então os Módulos 1 e 4 (APIs) — validar em camadas evita quebrar tudo de uma vez;
+	•	Teste em 1 grupo de confiança por 24h antes de liberar (regra do LINK SEGURO que já está no prompt).
+
+Para o Mercado Livre, o caminho prático: exporte semanalmente o CSV de produtos do portal de afiliados (ou use o scraper do repositório comunitário de link de afiliados 5) e alimente o banco; a IA gera os links de afiliado com seu publisher ID embutido.
+
+5. Checklist de ativação do LICO PRIMOS
+#
+Item
+Status
+1
+Conta de afiliado ativa nos 3 marketplaces (tags obtidas)
+☐
+2
+Acesso PA-API da Amazon aprovado (3 vendas qualificadas) 2
+☐
+3
+App criado no Shopee Open Platform com token de afiliado
+☐
+4
+VPS com n8n + Evolution API (ou conta Make) funcionando
+☐
+5
+Bot Telegram criado, QR do WhatsApp escaneado
+☐
+6
+Banco de dados com a tabela do Centro de Distribuição
+☐
+7
+Inventário de grupos com utm_medium configurado no fluxo
+☐
+8
+Teste de 24h em 1 grupo de confiança
+☐
+9
+Cron diário de garimpo + cron de horários de disparo ativos
+☐
+10
+Cron semanal de relatório de conversão por grupo
+☐
+Com tudo ativo, a operação LICO PRIMOS roda sozinha: você só precisa acompanhar o relatório semanal e aprovar expansões de nicho — o dia a dia leva menos de 5 minutos.
+
+Referências
+Guia LICO PRIMOS criado por Manus AI — complemento do prompt OFERTA MASTER PRO.

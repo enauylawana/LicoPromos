@@ -1,0 +1,383 @@
+openapi: 3.1.0
+info:
+  title: Lico Primos - API n8n
+  version: 1.1.0
+  description: API segura para busca, seleção e publicação controlada de ofertas.
+servers:
+  - url: http://localhost:3000/api
+    description: Desenvolvimento local
+security:
+  - ApiKeyAuth: []
+paths:
+  /search/run:
+    post:
+      summary: Inicia uma busca assíncrona
+      operationId: runSearch
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SearchRequest" }
+      responses:
+        "202":
+          description: Busca aceita
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SearchAccepted" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /search/jobs/{jobId}:
+    get:
+      summary: Consulta uma execução de busca
+      operationId: getSearchJob
+      parameters:
+        - $ref: "#/components/parameters/JobId"
+      responses:
+        "200":
+          description: Estado da busca
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/SearchJob" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /products/candidates:
+    get:
+      summary: Lista candidatos
+      operationId: listCandidates
+      parameters:
+        - { name: status, in: query, schema: { $ref: "#/components/schemas/ProductStatus" } }
+        - { name: nicheId, in: query, schema: { type: string } }
+        - { name: minScore, in: query, schema: { type: number, minimum: 0, maximum: 100 } }
+        - { $ref: "#/components/parameters/Limit" }
+        - { $ref: "#/components/parameters/Offset" }
+      responses:
+        "200":
+          description: Página de candidatos
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, pagination]
+                properties:
+                  items: { type: array, items: { $ref: "#/components/schemas/Product" } }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /products/candidates/export.txt:
+    get:
+      summary: Exporta candidatos em TXT para revisão manual
+      operationId: exportCandidatesTxt
+      parameters:
+        - { name: status, in: query, schema: { $ref: "#/components/schemas/ProductStatus" } }
+        - { name: nicheId, in: query, schema: { type: string } }
+        - { name: minScore, in: query, schema: { type: number, minimum: 0, maximum: 100 } }
+        - { $ref: "#/components/parameters/Limit" }
+        - { $ref: "#/components/parameters/Offset" }
+      responses:
+        "200":
+          description: Arquivo de candidatos; links normais servem apenas para análise
+          content:
+            text/plain: { schema: { type: string } }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /products/{id}/validate:
+    get:
+      summary: Valida um candidato sem publicá-lo
+      operationId: validateProduct
+      parameters:
+        - $ref: "#/components/parameters/ProductId"
+      responses:
+        "200":
+          description: Resultado da validação
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ProductValidation" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /products/{id}/story:
+    get:
+      summary: Gera uma prévia JSON 1080x1920 para Instagram Story sem publicar
+      operationId: productStoryPreview
+      parameters:
+        - $ref: "#/components/parameters/ProductId"
+      responses:
+        "200": { description: Payload de Story }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+  /products/{id}/publish:
+    post:
+      summary: Coloca um produto aprovado na fila
+      operationId: publishProduct
+      parameters:
+        - $ref: "#/components/parameters/ProductId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/PublishRequest" }
+      responses:
+        "202":
+          description: Produto colocado na fila ou resposta idempotente repetida
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PublishAccepted" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+  /products/{id}:
+    patch:
+      summary: Atualiza campos permitidos e o status do produto
+      operationId: updateProduct
+      parameters:
+        - $ref: "#/components/parameters/ProductId"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ProductPatch" }
+      responses:
+        "200":
+          description: Produto atualizado
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Product" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+  /publications/history:
+    get:
+      summary: Lista o histórico de publicações
+      operationId: publicationHistory
+      parameters:
+        - { name: productId, in: query, schema: { type: string } }
+        - { name: status, in: query, schema: { $ref: "#/components/schemas/ProductStatus" } }
+        - { $ref: "#/components/parameters/Limit" }
+        - { $ref: "#/components/parameters/Offset" }
+      responses:
+        "200":
+          description: Página do histórico
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, pagination]
+                properties:
+                  items: { type: array, items: { $ref: "#/components/schemas/Publication" } }
+                  pagination: { $ref: "#/components/schemas/Pagination" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /logs/error:
+    post:
+      summary: Registra uma falha de workflow do n8n
+      operationId: registerWorkflowError
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/WorkflowError" }
+      responses:
+        "201":
+          description: Erro registrado
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [registered, logId]
+                properties:
+                  registered: { const: true }
+                  logId: { type: string }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+  parameters:
+    ProductId: { name: id, in: path, required: true, schema: { type: string } }
+    JobId: { name: jobId, in: path, required: true, schema: { type: string } }
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: Chave única de 8 a 200 caracteres. Reutilize-a ao repetir a mesma requisição.
+      schema: { type: string, minLength: 8, maxLength: 200 }
+    Limit: { name: limit, in: query, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+    Offset: { name: offset, in: query, schema: { type: integer, minimum: 0, default: 0 } }
+  schemas:
+    ProductStatus:
+      type: string
+      enum: [awaiting_affiliate_link, pending, approved, queued, published, rejected, expired, failed]
+    SearchRequest:
+      type: object
+      properties:
+        query: { type: string, maxLength: 120, examples: [notebook] }
+        limit: { type: integer, minimum: 1, maximum: 200, default: 20 }
+        mode: { type: string, enum: [quick, wide], default: quick }
+        strategy: { type: string, enum: [general, best_sellers, offers, discount, commission], default: general }
+        searchSource:
+          type: string
+          enum: [affiliate_hub, official_api]
+          default: affiliate_hub
+          description: A fonte oficial não gera link afiliado; os itens ficam aguardando cadastro manual de um link meli.la.
+        filters:
+          type: object
+          properties:
+            minCommission: { type: number, minimum: 0, maximum: 100 }
+            minRating: { type: number, minimum: 0, maximum: 5 }
+            minDiscount: { type: number, minimum: 0, maximum: 100 }
+            minPrice: { type: number, minimum: 0 }
+            maxPrice: { type: number, minimum: 0 }
+            extraCommissionOnly: { type: boolean }
+            freeShippingOnly: { type: boolean }
+    SearchAccepted:
+      type: object
+      required: [jobId, status, statusUrl]
+      properties:
+        jobId: { type: string }
+        status: { const: running }
+        statusUrl: { type: string }
+    SearchJob:
+      type: object
+      required: [jobId, status, internalStatus, foundCount, errorCount]
+      properties:
+        jobId: { type: string }
+        status: { type: string, enum: [running, succeeded, failed] }
+        internalStatus: { type: string }
+        startedAt: { type: string, format: date-time }
+        finishedAt: { type: [string, "null"], format: date-time }
+        foundCount: { type: integer }
+        errorCount: { type: integer }
+        details: {}
+    Product:
+      type: object
+      required: [id, externalId, storeId, title, originalUrl, currentPrice, score, status]
+      properties:
+        id: { type: string }
+        externalId: { type: string }
+        storeId: { type: string }
+        nicheId: { type: [string, "null"] }
+        title: { type: string }
+        imageUrl: { type: [string, "null"], format: uri }
+        originalUrl: { type: string, format: uri }
+        affiliateUrl: { type: [string, "null"], format: uri }
+        currentPrice: { type: number }
+        previousPrice: { type: [number, "null"] }
+        discountPercent: { type: [number, "null"] }
+        rating: { type: [number, "null"] }
+        reviewCount: { type: [integer, "null"] }
+        soldQuantity: { type: [integer, "null"] }
+        sellerLevel: { type: [string, "null"], description: Nível Gold/Platinum quando informado pelo Mercado Livre. }
+        fullShipping: { type: boolean }
+        score: { type: number }
+        status: { $ref: "#/components/schemas/ProductStatus" }
+    ProductValidation:
+      type: object
+      required: [productId, status, valid, nicheMatches, alreadyPublished, quality]
+      properties:
+        productId: { type: string }
+        status: { $ref: "#/components/schemas/ProductStatus" }
+        valid: { type: boolean }
+        nicheMatches: { type: boolean }
+        alreadyPublished: { type: boolean }
+        available: { type: boolean }
+        realPrice: { type: boolean }
+        confirmedAffiliateLink: { type: boolean }
+        currentPrice: { type: number }
+        affiliateUrl: { type: [string, "null"], format: uri }
+        stock: { type: [integer, "null"] }
+        freeShipping: { type: boolean }
+        quality: { type: object, additionalProperties: true }
+    ProductPatch:
+      type: object
+      minProperties: 1
+      properties:
+        status: { $ref: "#/components/schemas/ProductStatus" }
+        title: { type: string, minLength: 3, maxLength: 500 }
+        affiliateUrl: { type: [string, "null"], format: uri }
+        currentPrice: { type: number, exclusiveMinimum: 0 }
+        previousPrice: { type: [number, "null"], exclusiveMinimum: 0 }
+        rating: { type: [number, "null"], minimum: 0, maximum: 5 }
+        reviewCount: { type: [integer, "null"], minimum: 0 }
+        stock: { type: [integer, "null"], minimum: 0 }
+        freeShipping: { type: boolean }
+    PublishRequest:
+      type: object
+      required: [channelIds]
+      properties:
+        channelIds: { type: array, minItems: 1, maxItems: 10, items: { type: string } }
+        name: { type: string, minLength: 3, maxLength: 100 }
+        scheduledAt: { type: [string, "null"], format: date-time }
+        intervalMinutes: { type: integer, enum: [1, 2, 5, 10, 30, 60], default: 5 }
+    PublishAccepted:
+      type: object
+      required: [productId, status, dryRun, distribution]
+      properties:
+        productId: { type: string }
+        status: { const: queued }
+        dryRun: { type: boolean }
+        distribution: { type: object, additionalProperties: true }
+    Publication:
+      type: object
+      required: [id, offerId, destination, message, status, attempts, createdAt]
+      properties:
+        id: { type: string }
+        offerId: { type: string }
+        destination: { type: string }
+        message: { type: string }
+        status: { $ref: "#/components/schemas/ProductStatus" }
+        attempts: { type: integer }
+        lastError: { type: [string, "null"] }
+        scheduledAt: { type: [string, "null"], format: date-time }
+        publishedAt: { type: [string, "null"], format: date-time }
+        createdAt: { type: string, format: date-time }
+    WorkflowError:
+      type: object
+      additionalProperties: false
+      required: [message]
+      properties:
+        executionId: { type: [string, number] }
+        workflowId: { type: [string, number] }
+        workflowName: { type: string, maxLength: 200 }
+        node: { type: string, maxLength: 200 }
+        productId: { type: string, maxLength: 200 }
+        endpoint: { type: string, maxLength: 500 }
+        httpStatus: { type: integer, minimum: 0, maximum: 599 }
+        message: { type: string, minLength: 1, maxLength: 2000 }
+        timestamp: { type: string, format: date-time }
+        attempts: { type: integer, minimum: 0, maximum: 100 }
+    Pagination:
+      type: object
+      required: [limit, offset, total, hasMore]
+      properties:
+        limit: { type: integer }
+        offset: { type: integer }
+        total: { type: integer }
+        hasMore: { type: boolean }
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code: { type: string }
+            message: { type: string }
+            details: {}
+  responses:
+    BadRequest:
+      description: Requisição inválida
+      content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } }
+    Unauthorized:
+      description: API key ausente ou inválida
+      content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } }
+    NotFound:
+      description: Recurso não encontrado
+      content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } }
+    Conflict:
+      description: Conflito de estado ou idempotência
+      content: { application/json: { schema: { $ref: "#/components/schemas/Error" } } }

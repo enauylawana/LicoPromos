@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Lico Primos — Captura de Ofertas",
+  "version": "1.0.0",
+  "description": "Captura produtos e links já gerados na Central de Afiliados para o Lico Primos local.",
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": [
+    "http://localhost:3000/*",
+    "http://127.0.0.1:3000/*",
+    "https://www.mercadolivre.com.br/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "action": {
+    "default_title": "Capturar ofertas",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.mercadolivre.com.br/afiliados/hub*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+Script de Apresentação — Prompt OFERTA MASTER PRO e Guia de Rastreamento UTM
+Duração estimada: 20–25 minutos | Formato: apresentação falada (reunião, vídeo ou live) | Público: você, sua equipe ou convidados interessados em operar como afiliado de marketplaces.
+
+O script está dividido em 8 blocos. As marcações [PAUSA], [DESTAQUE] e [DEMONSTRAÇÃO] indicam ritmo e recursos de apoio.
+
+
+
+BLOCO 1 — Abertura: o problema (2 minutos)
+Bom dia, pessoal. Deixa eu começar com uma pergunta: quantas horas por semana vocês gastam procurando ofertas, escrevendo as mensagens dos grupos e conferindo se o preço ainda está valendo? A maioria das pessoas que opera grupo de ofertas gasta de 3 a 4 horas por dia só nisso — e ainda assim perde as melhores promoções porque elas duram minutos.
+
+O que eu vou apresentar hoje resolve isso com uma única peça: um prompt de inteligência artificial. Não é um aplicativo, não é uma assinatura mensal — é um arquivo de texto que transforma qualquer IA com acesso à internet em um especialista completo de marketplaces, copywriting e distribuição. O nome dele é OFERTA MASTER PRO.
+
+[PAUSA]
+
+E ao longo dessa apresentação, além de mostrar como o prompt funciona, eu vou detalhar o segundo pilar da operação: o rastreamento UTM — o sistema que diz exatamente qual grupo de WhatsApp ou canal do Telegram está gerando cliques e vendas, e qual está só ocupando espaço.
+
+BLOCO 2 — Visão geral: o que o prompt faz (3 minutos)
+O OFERTA MASTER PRO opera o ciclo completo de um grupo de ofertas, em cinco movimentos.
+
+Primeiro, o garimpo: ele busca ofertas do dia, mais vendidos e produtos em alta no Mercado Livre, na Amazon e na Shopee, com quantidade exata — você pede 50, ele retorna 50 — e navega pelas páginas de resultados, uma por rodada, sem repetir o que já foi guardado.
+
+Segundo, o Centro de Distribuição: tudo que é garimpado vai para um inventário persistente, com ID, plataforma, preço, desconto, status e histórico de disparos. Essa é a peça mais importante: você garimpa uma vez e dispara por semanas sem precisar procurar de novo.
+
+Terceiro, a verificação de preços: antes de cada envio, ele confere na página real do marketplace se a promoção ainda vale. Oferta expirada sai da fila automaticamente — porque uma oferta morta queima a confiança do grupo, e confiança é o único ativo real desse negócio.
+
+Quarto, o copywriting: cada produto recebe uma mensagem pronta de até 8 linhas, com gatilho de urgência, prova social, preço ancorado e call to action — no formato exato que converte em grupo de ofertas brasileiro.
+
+Quinto, os links de afiliados com rastreamento: cada link sai com sua tag de afiliado e parâmetros UTM completos, e um log de rastreamento é gerado a cada disparo. Sobre isso a gente volta em detalhe no Bloco 5.
+
+[DESTAQUE] E ainda existem três módulos avançados que eu acabei de incorporar: o CAÇA AO REPRICE, que monitora quedas de preço e dispara alertas automáticos nos grupos assim que um produto despenca; o LINK SEGURO, o protocolo anti-bloqueio que protege os links de serem marcados como spam pelo WhatsApp e Telegram; e o IMÃ DE MEMBROS, o módulo de aquisição que gera as estratégias para chegar aos primeiros mil membros.
+
+BLOCO 3 — Como usar: o passo a passo (4 minutos)
+[DEMONSTRAÇÃO] — aqui vale mostrar a tela com o arquivo do prompt aberto.
+
+O uso tem seis passos. Passo um: copie o prompt inteiro — do "INÍCIO" ao "FIM" — e cole como primeira mensagem numa IA com acesso à internet: ChatGPT, Claude, Gemini ou Manus. A IA responde confirmando a ativação e faz cinco perguntas de configuração.
+
+Passo dois: as conexões. Para cada plataforma, a IA conduz o cadastro em três perguntas simples. No Mercado Livre, você informa o publisher ID do programa de parceiros; na Amazon, a tag de associação — aquele código que aparece nos links amzn.to; e na Shopee, o PID de afiliado. Sem essas tags, a IA bloqueia o disparo e avisa, porque link sem tag é comissão perdida.
+
+Passo três: preferências. Você define quantos produtos por rodada de garimpo — 20, 50, 100 —, quais nichos monitorar e quantas mensagens por disparo.
+
+Passo quatro: os comandos. São nove no total, mais os três módulos novos. Os principais: /ofertas do dia, /mais vendidos, /busca casa, /reabastecer beleza, /disparo 30 e /relatório. E os novos: /repricing ativar para o monitoramento de quedas de preço, /linkseguro para o protocolo anti-bloqueio e /aquisicao funil para as estratégias de crescimento.
+
+Passo cinco: o disparo. A IA entrega as mensagens em blocos prontos para copiar e colar, com o link de afiliado já embutido, e um log de rastreamento ao final.
+
+Passo seis: a manutenção. Rode /verificar preços e /reabastecer de forma periódica — leva dois minutos por dia e mantém o acervo sempre fresco.
+
+[PAUSA] O tempo total de operação diária, somando tudo, fica entre 7 e 10 minutos. Isso é o que separa essa operação do modelo manual, que consome horas.
+
+BLOCO 4 — Os módulos avançados em detalhe (4 minutos)
+Vou ser rápido e direto em cada um.
+
+CAÇA AO REPRICE. Você ativa com /repricing ativar e o sistema coloca os produtos do acervo em vigilância. Quando um produto cai 15% ou mais, atinge o menor preço histórico, ganha um cupom novo ou entra em oferta relâmpago, ele gera imediatamente o alerta — com a copy específica de queda de preço: "📉 PREÇO DESPENCOU — 48% a menos que ontem". O alerta tem prioridade máxima sobre o disparo normal, e o painel /repricing status mostra tudo que está sendo vigiado com o status VIGIANDO, QUEDA DETECTADA, ESTÁVEL ou FORA DE ALVO. Há inclusive um controle anti-ruído: no máximo três alertas por dia, e o que passar disso vira um resumo único "Quedas do dia".
+
+LINK SEGURO. O WhatsApp e o Telegram têm filtros que marcam links como inseguros e restringem o alcance de mensagens quando detectam padrão de spam em massa. O módulo embute quatro camadas de proteção: ritmo de envio (uma mensagem a cada 3 a 7 minutos, no máximo 15 por dia por grupo), qualidade de conteúdo (valor antes do link, um link por mensagem, sem linguagem de spam), variação de domínios e um plano de contingência — incluindo a técnica "comente QUERO", em que o link nem aparece na mensagem e vai direto para o privado de quem tem interesse. Essa técnica elimina o risco na origem e ainda aumenta o engajamento.
+
+IMÃ DE MEMBROS. O comando /aquisicao gera, fase por fase: o funil completo, as iscas digitais, as táticas orgânicas, as campanhas pagas e as copies de convite. O funil padrão leva dos zero aos mil membros em 90 dias: primeiro mês orgânico com vídeos curtos de oferta do dia, segundo mês de retenção e indicação em cascata, terceiro mês com tráfego pago de R$ 20 a 30 por dia no Facebook/Instagram Ads, com custo típico de R$ 1 a 3 por membro no Brasil.
+
+BLOCO 5 — O coração da análise: rastreamento UTM (5 minutos)
+Agora a parte que transforma essa operação de "achismo" em negócio gerido por dados.
+
+[DESTAQUE] UTM é um conjunto de etiquetas invisíveis coladas dentro do link. O link continua abrindo a página do produto normalmente, mas carrega informações de onde veio o clique. Exemplo real de um link gerado pelo prompt:
+
+amzn.to/fonebt58?tag=seudominio-20&utm_source=amazon&utm_medium=wa_eletronicos&utm_campaign=ofertas-10-08&utm_content=fone_amz017
+
+São quatro parâmetros. O utm_source diz a plataforma — amazon, shopee ou mercadolivre. O utm_medium é o parâmetro decisivo para a nossa pergunta: ele identifica o grupo de destino. Cada grupo recebe um código único e padronizado — wa_geral, wa_eletronicos, wa_maes, tg_principal, tg_vip. O utm_campaign agrupa a campanha do dia, e o utm_content aponta o produto específico pelo ID do Centro de Distribuição.
+
+A configuração prática tem cinco passos, e todos estão documentados no guia: primeiro, você monta o inventário de grupos com um código por grupo; segundo, informa esse inventário ao prompt, que passa a usar o código certo em cada link automaticamente — e se você não disser o grupo de destino, ele pergunta antes de gerar, nunca chuta; terceiro, cada envio é registrado no log de rastreamento que o prompt gera; quarto, os cliques são lidos no painel do encurtador — o Bitly mostra cliques por link, e como cada link tem seu utm_medium, você compara grupo por grupo; quinto, as conversões vêm do cruzamento com o painel de afiliados.
+
+E aqui está o ponto mais importante de toda essa apresentação: clique não é métrica de sucesso, conversão é. O cálculo por grupo é vendas do grupo dividido por cliques do grupo. Num exemplo real da operação: o grupo geral deu 180 cliques e 2 vendas — 1,1% de conversão; o grupo de eletrônicos, menor, deu 95 cliques e 6 vendas — 6,3%. O grupo de eletrônicos converte quase seis vezes mais. Com esse dado, a decisão é objetiva: os melhores produtos vão para o grupo de eletrônicos, e o Telegram recebe testes de copy mais agressiva para recuperar a conversão de 0,7%.
+
+Sem o UTM, você só saberia que vendeu. Com o UTM, você sabe onde vender mais.
+
+[PAUSA]
+
+BLOCO 6 — Integração: como tudo se conecta (3 minutos)
+Deixa eu amarrar os três materiais que vocês vão receber, porque um não funciona sem o outro.
+
+O prompt é o motor: garimpa, armazena, valida, escreve e dispara — com proteção anti-bloqueio embutida. O guia UTM é o painel de instrumentos: ele diz para onde cada clique foi e qual grupo está convertendo. E o plano de aquisição é o combustível: traz os primeiros mil membros em 90 dias para que o motor tenha audiência.
+
+Na prática diária, o fluxo é este: de manhã, /disparo 30 gera as mensagens com links rastreáveis por grupo; você copia, cola e envia no ritmo protegido pelo LINK SEGURO; semanalmente, você cruza o painel do Bitly com o painel de afiliados e redistribui as ofertas para os grupos que mais convertem; e mensalmente, o /aquisicao renova o crescimento enquanto o /repricing captura as quedas de preço que são o conteúdo de maior engajamento que existe nesse mercado.
+
+BLOCO 7 — Regras que protegem a operação (2 minutos)
+Três compromissos que o prompt assume e que eu quero deixar muito claros, porque é isso que diferencia essa operação de um disparador de spam qualquer.
+
+Primeiro: nada é inventado. Preço, desconto, avaliações e estoque vêm sempre da página real do produto. Se não for verificável, a mensagem sai com o aviso "⚠️ preço não verificado em tempo real".
+
+Segundo: validade acima de volume. É pior não enviar nada do que enviar uma oferta morta. Oferta expirada sai da fila sozinha, e a IA sugere o substituto do mesmo nicho já garimpado.
+
+Terceiro: proteção da reputação. O LINK SEGURO respeita os limites de envio, alterna domínios e mantém grupos espelho de backup. Se um link for bloqueado, a IA já gera as três alternativas automaticamente.
+
+BLOCO 8 — Encerramento e chamada para ação (2 minutos)
+Para resumir: uma única IA, configurada em 15 minutos, opera garimpo, copy, validação de preço, proteção de link e rastreamento por grupo — tudo isso em 10 minutos do seu dia.
+
+Os próximos passos são três. Um: copie o prompt e configure as três plataformas hoje. Dois: monte o inventário de grupos com os códigos UTM seguindo o guia — essa configuração inicial de 20 minutos é o que separa os próximos meses de operação com dados dos meses de operação às cegas. Três: inicie a fase 1 do plano de aquisição e faça o primeiro /disparo amanhã às 7h30.
+
+O material completo está todo entregue: o prompt, o guia UTM, o guia anti-bloqueio e o plano de aquisição. Dúvidas, eu respondo agora — e se quiserem, faço uma demonstração ao vivo do primeiro garimpo. Obrigado!
+
+[FIM DO SCRIPT]
+
+
+
+Script criado por Manus AI — para uso com o prompt OFERTA MASTER PRO, o guia de rastreamento UTM, o guia anti-bloqueio e o plano de aquisição.
