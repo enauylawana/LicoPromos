@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import { rateLimit } from "express-rate-limit";
 import bcrypt from "bcryptjs";
+import { OAuth2Client } from "google-auth-library";
 import { z } from "zod";
 import cron from "node-cron";
 import { config } from "./config.js";
@@ -208,6 +209,49 @@ app.post(
     res.json({ email: user.email });
   },
 );
+app.get("/api/auth/google", (_req, res) => {
+  if (!config.GOOGLE_CLIENT_ID || !config.GOOGLE_REDIRECT_URI)
+    return res.redirect(`${config.APP_URL}/?error=google_not_configured`);
+  const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+  url.searchParams.set("client_id", config.GOOGLE_CLIENT_ID);
+  url.searchParams.set("redirect_uri", config.GOOGLE_REDIRECT_URI);
+  url.searchParams.set("response_type", "code");
+  url.searchParams.set("scope", "openid email profile");
+  url.searchParams.set("prompt", "select_account");
+  res.redirect(url.toString());
+});
+app.get("/api/auth/google/callback", async (req, res) => {
+  try {
+    const code = String(req.query.code || "");
+    if (!code || !config.GOOGLE_CLIENT_ID || !config.GOOGLE_CLIENT_SECRET || !config.GOOGLE_REDIRECT_URI)
+      throw new Error("Login com Google não configurado.");
+    const client = new OAuth2Client(
+      config.GOOGLE_CLIENT_ID,
+      config.GOOGLE_CLIENT_SECRET,
+      config.GOOGLE_REDIRECT_URI,
+    );
+    const { tokens } = await client.getToken(code);
+    const ticket = await client.verifyIdToken({
+      idToken: tokens.id_token ?? "",
+      audience: config.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const email = payload?.email?.toLowerCase();
+    if (!email || !payload?.email_verified) throw new Error("E-mail do Google não verificado.");
+    const user = await db.adminUser.findUnique({ where: { email } });
+    if (!user) return res.redirect(`${config.APP_URL}/?error=google_not_admin`);
+    res.cookie("session", createSession(user.id), {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: config.NODE_ENV === "production",
+      maxAge: 12 * 60 * 60_000,
+    });
+    res.redirect(config.APP_URL);
+  } catch (error) {
+    console.error("Login com Google:", error instanceof Error ? error.message : error);
+    res.redirect(`${config.APP_URL}/?error=google_failed`);
+  }
+});
 app.post("/api/auth/logout", (_req, res) => {
   res.clearCookie("session");
   res.status(204).end();

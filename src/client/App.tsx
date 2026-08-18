@@ -174,11 +174,25 @@ async function api<T>(path: string, options?: RequestInit): Promise<T> {
   return response.status === 204 ? ({} as T) : response.json();
 }
 
+const googleLoginErrors: Record<string, string> = {
+  google_not_configured: "Login com Google ainda não foi configurado.",
+  google_not_admin: "Esse e-mail do Google não tem acesso ao painel.",
+  google_failed: "Não foi possível entrar com o Google. Tente novamente.",
+};
+
 function Login({ onLogin }: { onLogin: () => void }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("error");
+    if (code) {
+      setError(googleLoginErrors[code] ?? "Não foi possível entrar com o Google.");
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, []);
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -210,11 +224,9 @@ function Login({ onLogin }: { onLogin: () => void }) {
         <button
           className="google-login"
           type="button"
-          onClick={() =>
-            setError(
-              "Entrada pelo Google preparada; falta cadastrar as credenciais OAuth do Google.",
-            )
-          }
+          onClick={() => {
+            window.location.href = "/api/auth/google";
+          }}
         >
           <b>G</b> Entrar com Google
         </button>
