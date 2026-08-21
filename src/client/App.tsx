@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   Activity,
   BarChart3,
+  Bot,
   ChevronRight,
   Clipboard,
   CreditCard,
@@ -36,6 +37,9 @@ import {
   ReportsPage,
   type Platform,
 } from "./PlatformPages";
+import { LicoAgentsPage } from "./LicoAgents";
+import { Brand } from "./Brand";
+import { CommandCenter } from "./CommandCenter";
 
 type Offer = {
   id: string;
@@ -116,6 +120,11 @@ const brl = (v: number) =>
     v,
   );
 
+const visualPreview = () =>
+  import.meta.env.DEV
+    ? new URLSearchParams(window.location.search).get("preview")
+    : null;
+
 function SearchProgress({
   mode = "search",
   bestSellers = false,
@@ -185,6 +194,7 @@ function Login({ onLogin }: { onLogin: () => void }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loginDark, setLoginDark] = useState(() => window.localStorage.getItem("lico-command-theme") !== "light");
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("error");
@@ -210,27 +220,40 @@ function Login({ onLogin }: { onLogin: () => void }) {
     }
   };
   return (
-    <main className="login-shell">
-      <section className="login-card">
-        <img className="login-brand-logo" src="/lico-primos.jpeg" alt="Lico Primos" />
+    <main className={`login-shell ${loginDark ? "login-shell--dark" : ""}`}>
+      <button
+        className="login-theme-toggle"
+        aria-label={loginDark ? "Ativar modo claro" : "Ativar modo escuro"}
+        onClick={() => {
+          const next = !loginDark;
+          setLoginDark(next);
+          window.localStorage.setItem("lico-command-theme", next ? "dark" : "light");
+        }}
+      >
+        {loginDark ? <Sun /> : <Moon />} {loginDark ? "Modo claro" : "Modo escuro"}
+      </button>
+      <section className="login-panel login-panel--form">
+        <div className="login-form-wrap">
+        <Brand className="login-brand-logo" />
+        <div className="eyebrow login-eyebrow">PAINEL DE OPORTUNIDADES</div>
         <h1>
           Boas ofertas.
           <br />
           <em>Decisões seguras.</em>
         </h1>
-        <p className="muted">
+        <p className="lead">
           Entre no painel para revisar as oportunidades encontradas.
         </p>
         <button
-          className="google-login"
+          className="social-button"
           type="button"
           onClick={() => {
             window.location.href = "/api/auth/google";
           }}
         >
-          <b>G</b> Entrar com Google
+          <b className="google-g">G</b> Entrar com Google
         </button>
-        <div className="login-divider">
+        <div className="or">
           <span>ou use sua conta local</span>
         </div>
         <form onSubmit={submit}>
@@ -255,35 +278,46 @@ function Login({ onLogin }: { onLogin: () => void }) {
             />
           </label>
           {error && <p className="error">{error}</p>}
-          <button className="primary" disabled={loading}>
+          <button className="primary primary-button primary-button--full" disabled={loading}>
             {loading ? <LoaderCircle className="spin" /> : <ShieldCheck />}{" "}
             Entrar com segurança
           </button>
         </form>
-        <div className="login-links">
-          <span>Telegram</span>
-          <span>WhatsApp</span>
-          <span>Ajuda</span>
+        <p className="login-access-note">Acesso seguro para equipes Lico Primos.</p>
+        <p className="fine-print">Use as credenciais exibidas pelo comando de configuração inicial.</p>
+        <button className="login-support-link" type="button">Precisa de ajuda? <span>Fale com o suporte</span></button>
         </div>
-        <p className="login-note">Use as credenciais exibidas pelo comando de configuração inicial.</p>
       </section>
-      <aside className="login-art">
-        <div className="glow"></div>
-        <blockquote>
-          “Automação responsável começa com uma boa revisão humana.”
-        </blockquote>
-        <span>Modo dry run sempre ativo</span>
-      </aside>
+      <section className="login-panel login-panel--visual">
+        <div className="login-signal-field" aria-hidden="true">
+          <div className="login-signal-ring login-signal-ring--one" />
+          <div className="login-signal-ring login-signal-ring--two" />
+          <div className="login-signal-ring login-signal-ring--three" />
+          <span className="login-signal-node login-signal-node--one" />
+          <span className="login-signal-node login-signal-node--two" />
+          <span className="login-signal-node login-signal-node--three" />
+          <div className="login-signal-mark"><Brand compact inverse /></div>
+        </div>
+        <div className="visual-signature"><span className="visual-wordmark">Lico Primo<span>S</span></span><span>Opportunity intelligence</span></div>
+        <div className="visual-copy">
+          <span className="visual-kicker">LICO PRIMOS · INTELLIGENCE SYSTEM</span>
+          <h2>“Toda boa decisão começa com um sinal bem interpretado.”</h2>
+          <p>Observe os movimentos. Refine a leitura. Aja no momento certo.</p>
+          <span className="visual-mode">MODO DRY RUN SEMPRE ATIVO</span>
+        </div>
+      </section>
     </main>
   );
 }
 
-export function App() {
-  const [logged, setLogged] = useState<boolean | null>(null);
+function LegacyApp() {
+  const preview = visualPreview();
+  const [logged, setLogged] = useState<boolean | null>(() => preview ? true : null);
   const [data, setData] = useState<Dashboard | null>(null);
   const [platform, setPlatform] = useState<Platform | null>(null);
-  const [tab, setTab] = useState("Visão geral");
-  const [dark, setDark] = useState(false);
+  const [tab, setTab] = useState(() => preview === "agents" ? "LICO AGENTS" : "Visão geral");
+  const [dark, setDark] = useState(() => window.localStorage.getItem("lico-command-theme") !== "light");
+  const [confirmExit, setConfirmExit] = useState(false);
   const [busy, setBusy] = useState(false);
   const [cancellingSearch, setCancellingSearch] = useState(false);
   const searchAbortRef = useRef<AbortController | null>(null);
@@ -309,10 +343,12 @@ export function App() {
     }
   };
   useEffect(() => {
+    if (preview) return;
     void load();
-  }, []);
+  }, [preview]);
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
+    window.localStorage.setItem("lico-command-theme", dark ? "dark" : "light");
   }, [dark]);
   useEffect(() => {
     const addTitles = () =>
@@ -393,6 +429,7 @@ export function App() {
     "Visão geral",
     "Distribuição",
     "Descoberta",
+    "LICO AGENTS",
     "Integrações",
     "Minha conta",
     "Planos",
@@ -403,6 +440,7 @@ export function App() {
     LayoutDashboard,
     Send,
     History,
+    Bot,
     Store,
     UserRound,
     CreditCard,
@@ -410,12 +448,10 @@ export function App() {
     ShieldCheck,
   ];
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${preview ? "preview-mode" : ""}`}>
       {busy && <SearchProgress bestSellers={bestSellers} wide={wideSearch} cancel={() => void cancelSearch()} />}
       <aside className={`sidebar ${menu ? "open" : ""}`}>
-        <div className="logo">
-          <img src="/lico-primos.jpeg" alt="Lico Primos" />
-        </div>
+        <div className="logo"><Brand compact inverse onClick={() => setTab("Visão geral")} /></div>
         <nav>
           {nav.map((item, i) => {
             const Icon = navIcons[i];
@@ -443,7 +479,7 @@ export function App() {
             <span>Nenhuma mensagem real será enviada.</span>
           </div>
         </div>
-        <button title="Sair do sistema" className="logout" onClick={logout}>
+        <button title="Sair do sistema" className="logout" onClick={() => setConfirmExit(true)}>
           <LogOut /> Sair
         </button>
       </aside>
@@ -563,6 +599,7 @@ export function App() {
             )}
           />
         )}
+        {tab === "LICO AGENTS" && <LicoAgentsPage />}
         {tab === "Integrações" && platform && (
           <ConnectionsHub
             data={data}
@@ -582,8 +619,27 @@ export function App() {
         {tab === "Relatórios" && <ReportsPage />}
         {tab === "Ajuda" && <HelpPage />}
       </main>
+      {confirmExit && (
+        <div className="exit-backdrop" role="presentation" onClick={() => setConfirmExit(false)}>
+          <section className="exit-modal" role="dialog" aria-modal="true" aria-labelledby="exit-title" onClick={(event) => event.stopPropagation()}>
+            <span className="exit-modal__icon"><LogOut /></span>
+            <p className="eyebrow">SAIR DO PAINEL</p>
+            <h2 id="exit-title">Encerrar esta sessão?</h2>
+            <p>Você voltará para a tela de acesso. Seus dados e a estrutura de afiliados permanecem preservados.</p>
+            <div className="exit-modal__actions">
+              <button onClick={() => setConfirmExit(false)}>Continuar no painel</button>
+              <button className="exit-confirm" onClick={() => void logout()}><LogOut /> Sair agora</button>
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
+}
+
+export function App() {
+  const commandRoutes = ["/", "/login/dark", "/home", "/agents", "/agents/novo", "/agents/conversa", "/automacao", "/automacao/construtor"];
+  return commandRoutes.includes(window.location.pathname) ? <CommandCenter /> : <LegacyApp />;
 }
 
 function Stats({ data }: { data: Dashboard | null }) {

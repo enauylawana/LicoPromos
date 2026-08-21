@@ -172,3 +172,25 @@ model AuditLog {
   metadata   String   @default("{}")
   createdAt  DateTime @default(now())
 }
+
+model WhatsAppAgent {
+  id                  String   @id @default(cuid())
+  name                String
+  companyName         String   @default("")
+  niche               String   @default("")
+  role                String   @default("Atendimento")
+  persona             String   @default("")
+  mission             String   @default("")
+  audience            String   @default("")
+  tone                String   @default("[]")
+  objectives          String   @default("[]")
+  qualifyingQuestions String   @default("[]")
+  knowledgeBase       String   @default("")
+  tools               String   @default("[]")
+  restrictions        String   @default("")
+  humanHandoff        String   @default("")
+  status              String   @default("draft")
+  generatedPrompt     String   @default("")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}

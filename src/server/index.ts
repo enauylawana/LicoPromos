@@ -56,6 +56,14 @@ import {
   whatsappWebStatus,
 } from "./whatsapp-web.js";
 import { n8nApiRouter } from "./n8n-api.js";
+import {
+  agentInputSchema,
+  createAgent,
+  deleteAgent,
+  getAgent,
+  listAgents,
+  updateAgent,
+} from "./whatsapp-agents.js";
 
 export const app = express();
 const shutdown = () => {
@@ -931,6 +939,64 @@ app.post("/api/integrations/test", (_req, res) =>
     })),
   }),
 );
+
+app.get("/api/lico-agents", async (_req, res, next) => {
+  try {
+    res.json(await listAgents());
+  } catch (e) {
+    next(e);
+  }
+});
+app.get("/api/lico-agents/:id", async (req, res, next) => {
+  try {
+    const agent = await getAgent(req.params.id);
+    if (!agent) return res.status(404).json({ error: "Agente não encontrado." });
+    res.json(agent);
+  } catch (e) {
+    next(e);
+  }
+});
+app.post("/api/lico-agents", async (req, res, next) => {
+  const parsed = agentInputSchema.safeParse(req.body);
+  if (!parsed.success)
+    return res.status(400).json({ error: parsed.error.issues[0]?.message ?? "Revise os dados do agente." });
+  try {
+    const agent = await createAgent(parsed.data);
+    await db.auditLog.create({
+      data: { action: "whatsapp_agent.created", entityType: "WhatsAppAgent", entityId: agent.id },
+    });
+    res.status(201).json(agent);
+  } catch (e) {
+    next(e);
+  }
+});
+app.put("/api/lico-agents/:id", async (req, res, next) => {
+  const parsed = agentInputSchema.safeParse(req.body);
+  if (!parsed.success)
+    return res.status(400).json({ error: parsed.error.issues[0]?.message ?? "Revise os dados do agente." });
+  try {
+    const agent = await updateAgent(req.params.id, parsed.data);
+    if (!agent) return res.status(404).json({ error: "Agente não encontrado." });
+    await db.auditLog.create({
+      data: { action: "whatsapp_agent.updated", entityType: "WhatsAppAgent", entityId: agent.id },
+    });
+    res.json(agent);
+  } catch (e) {
+    next(e);
+  }
+});
+app.delete("/api/lico-agents/:id", async (req, res, next) => {
+  try {
+    const removed = await deleteAgent(req.params.id);
+    if (!removed) return res.status(404).json({ error: "Agente não encontrado." });
+    await db.auditLog.create({
+      data: { action: "whatsapp_agent.deleted", entityType: "WhatsAppAgent", entityId: req.params.id },
+    });
+    res.status(204).end();
+  } catch (e) {
+    next(e);
+  }
+});
 
 app.use(
   (

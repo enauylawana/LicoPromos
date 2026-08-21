@@ -1,0 +1,21 @@
+CREATE TABLE "WhatsAppAgent" (
+  "id" TEXT NOT NULL PRIMARY KEY,
+  "name" TEXT NOT NULL,
+  "companyName" TEXT NOT NULL DEFAULT '',
+  "niche" TEXT NOT NULL DEFAULT '',
+  "role" TEXT NOT NULL DEFAULT 'Atendimento',
+  "persona" TEXT NOT NULL DEFAULT '',
+  "mission" TEXT NOT NULL DEFAULT '',
+  "audience" TEXT NOT NULL DEFAULT '',
+  "tone" TEXT NOT NULL DEFAULT '[]',
+  "objectives" TEXT NOT NULL DEFAULT '[]',
+  "qualifyingQuestions" TEXT NOT NULL DEFAULT '[]',
+  "knowledgeBase" TEXT NOT NULL DEFAULT '',
+  "tools" TEXT NOT NULL DEFAULT '[]',
+  "restrictions" TEXT NOT NULL DEFAULT '',
+  "humanHandoff" TEXT NOT NULL DEFAULT '',
+  "status" TEXT NOT NULL DEFAULT 'draft',
+  "generatedPrompt" TEXT NOT NULL DEFAULT '',
+  "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
