@@ -4,7 +4,16 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 
 export default tseslint.config(
-  { ignores: ['dist/**', 'dist-server/**', 'node_modules/**', '.runtime/**', '.wwebjs_cache/**'] },
+  {
+    ignores: [
+      'dist/**',
+      'dist-server/**',
+      'node_modules/**',
+      'node_modules-incompleto/**',
+      '.runtime/**',
+      '.wwebjs_cache/**',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
