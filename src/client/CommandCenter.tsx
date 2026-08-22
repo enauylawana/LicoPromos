@@ -141,11 +141,12 @@ function go(path: Route) {
 
 function useTheme() {
   const [dark, setDark] = useState(
-    () => localStorage.getItem("lico-theme") !== "light",
+    () => localStorage.getItem("lico-command-theme") !== "light",
   );
   useEffect(() => {
     document.documentElement.dataset.ccTheme = dark ? "dark" : "light";
-    localStorage.setItem("lico-theme", dark ? "dark" : "light");
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    localStorage.setItem("lico-command-theme", dark ? "dark" : "light");
   }, [dark]);
   return [dark, setDark] as const;
 }
@@ -347,6 +348,7 @@ function Shell({
 }) {
   const [drawer, setDrawer] = useState<Drawer>(null);
   const [open, setOpen] = useState(false);
+  const [dark, setDark] = useTheme();
   const nav = automation
     ? ([
         ["Visão geral", "/automacao", LayoutDashboard],
@@ -422,6 +424,15 @@ function Shell({
           <div className="cc-status">
             <i /> Sistemas operacionais
           </div>
+          <button
+            className="cc-theme-page"
+            aria-label={dark ? "Ativar modo claro" : "Ativar modo escuro"}
+            title={dark ? "Ativar modo claro" : "Ativar modo escuro"}
+            onClick={() => setDark(!dark)}
+          >
+            {dark ? <Sun /> : <Moon />}
+            <span>{dark ? "Modo claro" : "Modo escuro"}</span>
+          </button>
           <button className="cc-menu-home" onClick={() => go("/home")}>
             <Home /> Menu principal
           </button>

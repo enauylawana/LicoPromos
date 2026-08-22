@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import {
   Activity,
   BarChart3,
-  Bot,
   ChevronRight,
   Clipboard,
   CreditCard,
@@ -37,7 +36,6 @@ import {
   ReportsPage,
   type Platform,
 } from "./PlatformPages";
-import { LicoAgentsPage } from "./LicoAgents";
 import { Brand } from "./Brand";
 import { CommandCenter } from "./CommandCenter";
 
@@ -315,7 +313,7 @@ function LegacyApp() {
   const [logged, setLogged] = useState<boolean | null>(() => preview ? true : null);
   const [data, setData] = useState<Dashboard | null>(null);
   const [platform, setPlatform] = useState<Platform | null>(null);
-  const [tab, setTab] = useState(() => preview === "agents" ? "LICO AGENTS" : "Visão geral");
+  const [tab, setTab] = useState("Visão geral");
   const [dark, setDark] = useState(() => window.localStorage.getItem("lico-command-theme") !== "light");
   const [confirmExit, setConfirmExit] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -348,6 +346,7 @@ function LegacyApp() {
   }, [preview]);
   useEffect(() => {
     document.documentElement.dataset.theme = dark ? "dark" : "light";
+    document.documentElement.dataset.ccTheme = dark ? "dark" : "light";
     window.localStorage.setItem("lico-command-theme", dark ? "dark" : "light");
   }, [dark]);
   useEffect(() => {
@@ -437,7 +436,6 @@ function LegacyApp() {
     "Visão geral",
     "Distribuição",
     "Descoberta",
-    "LICO AGENTS",
     "Integrações",
     "Minha conta",
     "Planos",
@@ -448,7 +446,6 @@ function LegacyApp() {
     LayoutDashboard,
     Send,
     History,
-    Bot,
     Store,
     UserRound,
     CreditCard,
@@ -480,13 +477,6 @@ function LegacyApp() {
             );
           })}
         </nav>
-        <div className="safe-box">
-          <ShieldCheck />
-          <div>
-            <b>Modo seguro</b>
-            <span>Nenhuma mensagem real será enviada.</span>
-          </div>
-        </div>
         <button title="Sair do sistema" className="logout" onClick={() => setConfirmExit(true)}>
           <LogOut /> Sair
         </button>
@@ -607,7 +597,6 @@ function LegacyApp() {
             )}
           />
         )}
-        {tab === "LICO AGENTS" && <LicoAgentsPage />}
         {tab === "Integrações" && platform && (
           <ConnectionsHub
             data={data}
