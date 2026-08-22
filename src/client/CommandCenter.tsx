@@ -46,6 +46,18 @@ import {
 } from "lucide-react";
 import { Brand } from "./Brand";
 
+async function api<T>(path: string, options?: RequestInit): Promise<T> {
+  const response = await fetch(`/api${path}`, {
+    ...options,
+    headers: { "Content-Type": "application/json", ...options?.headers },
+  });
+  if (!response.ok) {
+    const payload = await response.json().catch(() => ({}));
+    throw new Error(payload.error || "Não foi possível concluir.");
+  }
+  return response.status === 204 ? ({} as T) : response.json();
+}
+
 type Route =
   | "/"
   | "/login/dark"
@@ -429,18 +441,34 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [entering, setEntering] = useState(false);
+  const [loginError, setLoginError] = useState("");
   const [touch, setTouch] = useState<{
     x: number;
     y: number;
     id: number;
   } | null>(null);
-  const submit = () => {
+  useEffect(() => {
+    void api("/auth/me").then(() => go("/home")).catch(() => undefined);
+  }, []);
+  const submit = async () => {
     if (!email || !password) {
       setErrors(true);
       return;
     }
     setEntering(true);
-    window.setTimeout(() => go("/home"), 650);
+    setLoginError("");
+    try {
+      await api("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+      });
+      go("/home");
+    } catch (error) {
+      setLoginError((error as Error).message);
+      setErrors(true);
+    } finally {
+      setEntering(false);
+    }
   };
   return (
     <main className="cc-login">
@@ -517,7 +545,7 @@ function LoginPage() {
             </label>
             {errors && (
               <span className="cc-field-error">
-                Preencha os dois campos para continuar.
+                {loginError || "Preencha os dois campos para continuar."}
               </span>
             )}
             <div className="cc-login-actions">
@@ -543,6 +571,9 @@ function LoginPage() {
                 className="cc-google"
                 aria-label="Entrar com Google"
                 title="Entrar com Google"
+                onClick={() => {
+                  window.location.href = "/api/auth/google";
+                }}
               >
                 G
               </button>
@@ -629,6 +660,10 @@ function HomePage() {
     () => localStorage.getItem("lico-sound") !== "off",
   );
   const [exit, setExit] = useState(false);
+  const logout = async () => {
+    await api("/auth/logout", { method: "POST" }).catch(() => undefined);
+    go("/");
+  };
   useEffect(
     () => localStorage.setItem("lico-sound", sound ? "on" : "off"),
     [sound],
@@ -685,6 +720,36 @@ function HomePage() {
         </div>
       </section>
       <section className="cc-environments">
+        <button className="affiliates" onClick={() => window.location.assign("/afiliados")}>
+          <div className="cc-env-visual affiliates">
+            <img
+              src="/command-assets/login-opportunity-radar-3d.png"
+              alt="Radar de oportunidades analisando produtos e ofertas"
+            />
+            <span className="cc-env-signal">
+              <i /> operação de afiliados
+            </span>
+            <div className="cc-image-glint" />
+            <div className="cc-scene-path">
+              <i />
+              <i />
+              <i />
+            </div>
+          </div>
+          <div className="cc-env-copy">
+            <span className="cc-env-icon affiliates">
+              <PackageSearch />
+            </span>
+            <span className="cc-kicker">OFERTAS · LINKS · DISTRIBUIÇÃO</span>
+            <h2>Lico Afiliados</h2>
+            <p>
+              Busque produtos, gere links de afiliado e distribua ofertas para seus grupos.
+            </p>
+            <b>
+              Abrir operação <ArrowRight />
+            </b>
+          </div>
+        </button>
         <button onClick={() => go("/agents")}>
           <div className="cc-env-visual agents">
             <img
@@ -767,7 +832,7 @@ function HomePage() {
           </p>
           <div className="cc-modal-actions">
             <button onClick={() => setExit(false)}>Continuar no painel</button>
-            <button className="cc-primary" onClick={() => go("/")}>
+            <button className="cc-primary" onClick={() => void logout()}>
               <LogOut /> Sair agora
             </button>
           </div>

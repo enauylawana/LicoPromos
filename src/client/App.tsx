@@ -424,6 +424,14 @@ function LegacyApp() {
         <LoaderCircle className="spin" />
       </div>
     );
+  if (!logged && !preview) {
+    window.location.replace("/");
+    return (
+      <div className="center">
+        <LoaderCircle className="spin" />
+      </div>
+    );
+  }
   if (!logged) return <Login onLogin={load} />;
   const nav = [
     "Visão geral",
